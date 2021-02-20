@@ -7,9 +7,11 @@
   },
   "dependencies": {
     "next": "latest",
+    "node-sass": "^5.0.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "sass": "1.26.3"
+    "sass": "1.26.3",
+    "styled-jsx-plugin-sass": "^1.0.0"
   },
   "license": "MIT"
 }

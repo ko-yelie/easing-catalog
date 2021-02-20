@@ -12,7 +12,11 @@ export default function Rectangle() {
   })
 
   return (
-    <div className={className(styles.rectangle, {[styles._show]: show})}>
-    </div>
+    <>
+      <div className={className(styles.rectangle, {[styles._show]: show})}>
+      </div>
+      <style jsx>{`
+      `}</style>
+    </>
   )
 }
