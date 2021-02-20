@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="app">
       <HelloWorld />
-      <Link href="rectangle">rectangle</Link>
+      <Link href="/rectangle/">rectangle</Link>
     </div>
   )
 }
