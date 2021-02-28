@@ -6,10 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "bezier-easing-editor": "^0.8.0",
     "gsap": "./vendors/gsap-bonus.tgz",
     "next": "latest",
     "node-sass": "^5.0.0",
     "react": "^16.7.0",
+    "react-bezier-curve-editor": "^1.0.0",
     "react-dom": "^16.7.0",
     "sass": "1.26.3",
     "styled-jsx-plugin-sass": "^1.0.0"
