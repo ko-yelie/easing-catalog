@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "gsap": "./vendors/gsap-bonus.tgz",
     "next": "latest",
     "node-sass": "^5.0.0",
     "react": "^16.7.0",

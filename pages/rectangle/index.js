@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { className } from '../../modules/js/className'
+import gsapK from '../../modules/js/gsapK'
 import { camelCase } from '../../modules/js/string'
 import styles from './index.module.scss'
 
@@ -10,58 +11,197 @@ const param = {
 }
 
 const EASE_LIST = {
-  ease: 'ease',
-  easeIn: 'ease-in',
-  easeOut: 'ease-out',
-  easeInOut: 'ease-in-out',
-  easeInSine: 'cubic-bezier(0.12, 0, 0.39, 0)',
-  easeOutSine: 'cubic-bezier(0.61, 1, 0.88, 1)',
-  easeInOutSine: 'cubic-bezier(0.37, 0, 0.63, 1)',
-  easeInQuad: 'cubic-bezier(0.11, 0, 0.5, 0)',
-  easeOutQuad: 'cubic-bezier(0.5, 1, 0.89, 1)',
-  easeInOutQuad: 'cubic-bezier(0.45, 0, 0.55, 1)',
-  easeInCubic: 'cubic-bezier(0.32, 0, 0.67, 0)',
-  easeOutCubic: 'cubic-bezier(0.33, 1, 0.68, 1)',
-  easeInOutCubic: 'cubic-bezier(0.65, 0, 0.35, 1)',
-  easeInQuart: 'cubic-bezier(0.5, 0, 0.75, 0)',
-  easeOutQuart: 'cubic-bezier(0.25, 1, 0.5, 1)',
-  easeInOutQuart: 'cubic-bezier(0.76, 0, 0.24, 1)',
-  easeInQuint: 'cubic-bezier(0.64, 0, 0.78, 0)',
-  easeOutQuint: 'cubic-bezier(0.22, 1, 0.36, 1)',
-  easeInOutQuint: 'cubic-bezier(0.83, 0, 0.17, 1)',
-  easeInExpo: 'cubic-bezier(0.7, 0, 0.84, 0)',
-  easeOutExpo: 'cubic-bezier(0.16, 1, 0.3, 1)',
-  easeInOutExpo: 'cubic-bezier(0.87, 0, 0.13, 1)',
-  easeInCirc: 'cubic-bezier(0.55, 0, 1, 0.45)',
-  easeOutCirc: 'cubic-bezier(0, 0.55, 0.45, 1)',
-  easeInOutCirc: 'cubic-bezier(0.85, 0, 0.15, 1)',
-  easeInBack: 'cubic-bezier(0.36, 0, 0.66, -0.56)',
-  easeOutBack: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-  easeInOutBack: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
-  // easeInElastic: 'no',
-  // easeOutElastic: 'no',
-  // easeInOutElastic: 'no',
-  // easeInBounce: 'no',
-  // easeOutBounce: 'no',
-  // easeInOutBounce: 'no',
+  linear: {
+    in: {
+      css: 'linear',
+      gsap: 'none',
+    },
+    out: {
+      css: 'linear',
+      gsap: 'none',
+    },
+    inOut: {
+      css: 'linear',
+      gsap: 'none',
+    },
+  },
+  ease: {
+    default: {
+      css: 'ease',
+      gsap: CustomEase.create('ease', '.25,.1,.25,1'),
+    },
+    in: {
+      css: 'ease-in',
+      gsap: CustomEase.create('ease-in', '.42,0,1,1'),
+    },
+    out: {
+      css: 'ease-out',
+      gsap: CustomEase.create('ease-out', '0,0,.58,1'),
+    },
+    inOut: {
+      css: 'ease-in-out',
+      gsap: CustomEase.create('ease-in-out', '.42,0,.58,1'),
+    },
+  },
+  sine: {
+    in: {
+      css: 'cubic-bezier(0.12, 0, 0.39, 0)',
+      gsap: 'sine.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.61, 1, 0.88, 1)',
+      gsap: 'sine.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.37, 0, 0.63, 1)',
+      gsap: 'sine.inOut',
+    },
+  },
+  quad: {
+    in: {
+      css: 'cubic-bezier(0.11, 0, 0.5, 0)',
+      gsap: 'quad.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.5, 1, 0.89, 1)',
+      gsap: 'quad.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.45, 0, 0.55, 1)',
+      gsap: 'quad.inOut',
+    },
+  },
+  cubic: {
+    in: {
+      css: 'cubic-bezier(0.32, 0, 0.67, 0)',
+      gsap: 'cubic.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.33, 1, 0.68, 1)',
+      gsap: 'cubic.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.65, 0, 0.35, 1)',
+      gsap: 'cubic.inOut',
+    },
+  },
+  quart: {
+    in: {
+      css: 'cubic-bezier(0.5, 0, 0.75, 0)',
+      gsap: 'quart.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.25, 1, 0.5, 1)',
+      gsap: 'quart.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.76, 0, 0.24, 1)',
+      gsap: 'quart.inOut',
+    },
+  },
+  quint: {
+    in: {
+      css: 'cubic-bezier(0.64, 0, 0.78, 0)',
+      gsap: 'quint.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      gsap: 'quint.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.83, 0, 0.17, 1)',
+      gsap: 'quint.inOut',
+    },
+  },
+  expo: {
+    in: {
+      css: 'cubic-bezier(0.7, 0, 0.84, 0)',
+      gsap: 'expo.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      gsap: 'expo.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.87, 0, 0.13, 1)',
+      gsap: 'expo.inOut',
+    },
+  },
+  circ: {
+    in: {
+      css: 'cubic-bezier(0.55, 0, 1, 0.45)',
+      gsap: 'circ.in',
+    },
+    out: {
+      css: 'cubic-bezier(0, 0.55, 0.45, 1)',
+      gsap: 'circ.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.85, 0, 0.15, 1)',
+      gsap: 'circ.inOut',
+    },
+  },
+  back: {
+    in: {
+      css: 'cubic-bezier(0.36, 0, 0.66, -0.56)',
+      gsap: 'back.in',
+    },
+    out: {
+      css: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      gsap: 'back.out',
+    },
+    inOut: {
+      css: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+      gsap: 'back.inOut',
+    },
+  },
+  elastic: {
+    in: {
+      css: null,
+      gsap: 'elastic.in',
+    },
+    out: {
+      css: null,
+      gsap: 'elastic.out',
+    },
+    inOut: {
+      css: null,
+      gsap: 'elastic.inOut',
+    },
+  },
+  bounce: {
+    in: {
+      css: null,
+      gsap: 'bounce.in',
+    },
+    out: {
+      css: null,
+      gsap: 'bounce.out',
+    },
+    inOut: {
+      css: null,
+      gsap: 'bounce.inOut',
+    },
+  },
 }
 
-const EASE_NAME_LIST = [
-  'ease',
-  'sine',
-  'quad',
-  'cubic',
-  'quart',
-  'quint',
-  'expo',
-  'circ',
-  'back',
-  // 'elastic',
-  // 'bounce',
-]
+const EASE_NAME_LIST = {
+  'linear': 'linear (none)',
+  'ease': 'ease',
+  'sine': 'sine',
+  'quad': 'quad (power1)',
+  'cubic': 'cubic (power2)',
+  'quart': 'quart (power3)',
+  'quint': 'quint (power4)',
+  'expo': 'expo',
+  'circ': 'circ',
+  'back': 'back',
+  'elastic': 'elastic',
+  'bounce': 'bounce',
+}
 
 const EASE_TYPE_LIST = [
-  '',
+  'default',
   'in',
   'out',
   'inOut',
@@ -72,14 +212,7 @@ export default function Rectangle() {
   const [easeType, setEaseType] = useState(param.easeType)
   const [duration, setDuration] = useState(param.duration)
   const [isShow, setIsShow] = useState(false)
-
-  useEffect(() => {
-    if (!isShow) {
-      requestAnimationFrame(() => {
-        setIsShow(true)
-      })
-    }
-  }, [isShow])
+  const elGsap = useRef()
 
   const play = () => {
     setIsShow(false)
@@ -90,7 +223,7 @@ export default function Rectangle() {
     switch (name) {
       case 'easeName':
         setEaseName(value)
-        if (value !== 'ease' && easeType === '') {
+        if (value !== 'ease' && easeType === 'default') {
           setEaseType('in')
         }
         break
@@ -105,23 +238,63 @@ export default function Rectangle() {
     play()
   }
 
-  const ease = EASE_LIST[camelCase(`ease ${easeType} ${easeName === 'ease' ? '' : easeName}`)]
+  const easeCss = EASE_LIST[easeName][easeType].css
+  const easeGsap = EASE_LIST[easeName][easeType].gsap
+
+  useEffect(() => {
+    if (!isShow) {
+      requestAnimationFrame(() => {
+        setIsShow(true)
+
+        gsapK.fromTo(elGsap.current, {
+          x: '-100%',
+        }, {
+          x: 0,
+          duration,
+          ease: easeGsap,
+        })
+      })
+    }
+  }, [isShow])
 
   return (
     <>
-      <div className={className(styles.rectangle, {[styles._show]: isShow})}>
-        <div
-          className={styles.inner}
-          style={
-            isShow
-              ? {
-                  transitionTimingFunction: ease,
-                  transitionDuration: `${duration}s`,
+      <dl className={className(styles.ui)}>
+        <div>
+          <dt>CSS:</dt>
+          <dd>
+            <div className={className(styles.rectangle, styles.css, {[styles._show]: isShow})}>
+              <div
+                className={styles.inner}
+                style={
+                  isShow
+                    ? {
+                        transitionTimingFunction: easeCss,
+                        transitionDuration: `${duration}s`,
+                      }
+                    : null
                 }
-              : null
-          }
-        ></div>
-      </div>
+              ></div>
+            </div>
+
+            <small>{easeCss}</small>
+          </dd>
+        </div>
+
+        <div>
+          <dt>GSAP:</dt>
+          <dd>
+            <div className={className(styles.rectangle, styles.gsap, {[styles._show]: isShow})}>
+              <div
+                className={styles.inner}
+                ref={elGsap}
+              ></div>
+            </div>
+
+            <small>{easeGsap}</small>
+          </dd>
+        </div>
+      </dl>
 
       <dl>
         <dt>ease:</dt>
@@ -130,27 +303,29 @@ export default function Rectangle() {
             <dt>name:</dt>
             <dd>
               <select name="easeName" value={easeName} onChange={handleChange}>
-                {EASE_NAME_LIST.map((value) => (
-                  <option value={value} key={value}>{value}</option>
+                {Object.entries(EASE_NAME_LIST).map(([key, value]) => (
+                  <option value={key} key={key}>{value}</option>
                 ))}
               </select>
             </dd>
 
-            <dt>type:</dt>
-            <dd>
-              <select name="easeType" value={easeType} onChange={handleChange}>
-                {EASE_TYPE_LIST.map((value) =>
-                  easeName !== 'ease' && value === ''
-                    ? null
-                    : (
-                      <option value={value} key={value}>{value}</option>
-                    )
-                )}
-              </select>
-            </dd>
+            {easeName !== 'linear' &&
+              <>
+                <dt>type:</dt>
+                <dd>
+                  <select name="easeType" value={easeType} onChange={handleChange}>
+                    {EASE_TYPE_LIST.map((value) =>
+                      easeName !== 'ease' && value === 'default'
+                        ? null
+                        : (
+                          <option value={value} key={value}>{value}</option>
+                        )
+                    )}
+                  </select>
+                </dd>
+              </>
+            }
           </dl>
-
-          <small>{`(${ease})`}</small>
         </dd>
 
         <dt>duration:</dt>
