@@ -8,10 +8,14 @@ import s from './index.module.scss';
 import { EASE_LIST } from '../../modules/js/easeList';
 
 const param = {
-  easeName: 'expo',
+  easeName: 'power4',
   easeType: 'out',
   easeCustom: [0.25, 0.1, 0.25, 1],
-  duration: 1,
+  duration: 1.2,
+  y: '1.2em',
+  easeFade: 'power2.out',
+  stagger: 0.09,
+  text: 'animation',
 };
 
 export default function Text() {
@@ -44,20 +48,38 @@ export default function Text() {
     ? `CustomEase.create('customEase', '${ease.gsap}')`
     : ease.gsap;
 
+  const { y, easeFade, stagger } = param;
+
   useEffect(() => {
     if (!isShow) {
       requestAnimationFrame(() => {
         setIsShow(true);
 
+        const chars = elGsap.current.querySelectorAll('span');
+
         gsapK.fromTo(
-          elGsap.current,
+          chars,
           {
-            x: '-100%',
+            opacity: 0,
           },
           {
-            x: 0,
+            opacity: 1,
+            duration,
+            ease: easeFade,
+            stagger,
+          }
+        );
+
+        gsapK.fromTo(
+          chars,
+          {
+            y,
+          },
+          {
+            y: 0,
             duration,
             ease: easeGsap,
+            stagger,
           }
         );
       });
@@ -71,21 +93,26 @@ export default function Text() {
           <dt>CSS:</dt>
           <dd>
             <div
-              className={className(s.rectangle, s.css, {
+              className={className(s.text, s.css, {
                 [s._show]: isShow,
               })}
             >
-              <div
-                className={s.inner}
-                style={
-                  isShow
-                    ? {
-                        transitionTimingFunction: easeCss,
-                        transitionDuration: `${duration}s`,
-                      }
-                    : null
-                }
-              ></div>
+              {param.text.split('').map((char, i) => (
+                <span
+                  className={s.char}
+                  key={`${i}-${char}`}
+                  style={
+                    isShow
+                      ? {
+                          transitionTimingFunction: easeCss,
+                          transitionDuration: `${duration}s`,
+                        }
+                      : null
+                  }
+                >
+                  {char}
+                </span>
+              ))}
             </div>
 
             <div>
@@ -98,11 +125,16 @@ export default function Text() {
           <dt>GSAP:</dt>
           <dd>
             <div
-              className={className(s.rectangle, s.gsap, {
+              className={className(s.text, s.gsap, {
                 [s._show]: isShow,
               })}
+              ref={elGsap}
             >
-              <div className={s.inner} ref={elGsap}></div>
+              {param.text.split('').map((char, i) => (
+                <span className={s.char} key={`${i}-${char}`}>
+                  {char}
+                </span>
+              ))}
             </div>
 
             <div>

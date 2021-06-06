@@ -172,6 +172,10 @@ export const EASE_LIST = {
     },
   },
 };
+EASE_LIST.power1 = EASE_LIST.quad;
+EASE_LIST.power2 = EASE_LIST.cubic;
+EASE_LIST.power3 = EASE_LIST.quart;
+EASE_LIST.power4 = EASE_LIST.quint;
 
 export const EASE_NAME_LIST = {
   custom: 'custom',
