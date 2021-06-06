@@ -14,7 +14,7 @@ const param = {
   duration: 1,
 };
 
-export default function Rectangle() {
+export default function Text() {
   const [easeName, setEaseName] = useState(param.easeName);
   const [easeType, setEaseType] = useState(param.easeType);
   const [easeCustom, setEaseCustom] = useState(param.easeCustom);
