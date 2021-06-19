@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
 import { CustomEase } from 'gsap/dist/CustomEase'
 import Easing from '../../components/Easing'
 import { className } from '../../modules/js/className'
@@ -46,6 +45,7 @@ export default function Rectangle() {
 
   useEffect(() => {
     if (!isShow) {
+      // NOTE: CSSアニメーションが発火するようにrequestAnimationFrameを噛ます
       requestAnimationFrame(() => {
         setIsShow(true)
 
@@ -62,7 +62,7 @@ export default function Rectangle() {
         )
       })
     }
-  }, [isShow])
+  }, [isShow, easeGsap, duration])
 
   return (
     <>

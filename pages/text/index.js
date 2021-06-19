@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
 import { CustomEase } from 'gsap/dist/CustomEase'
 import Easing from '../../components/Easing'
 import { className } from '../../modules/js/className'
@@ -48,14 +47,14 @@ export default function Text() {
     ? `CustomEase.create('customEase', '${ease.gsap}')`
     : ease.gsap
 
-  const { y, easeFade, stagger } = param
-
   useEffect(() => {
     if (!isShow) {
+      // NOTE: CSSアニメーションが発火するようにrequestAnimationFrameを噛ます
       requestAnimationFrame(() => {
         setIsShow(true)
 
         const chars = elGsap.current.querySelectorAll('span')
+        const { y, easeFade, stagger } = param
 
         gsapK.fromTo(
           chars,
@@ -84,7 +83,7 @@ export default function Text() {
         )
       })
     }
-  }, [isShow])
+  }, [isShow, easeGsap, duration])
 
   return (
     <>
