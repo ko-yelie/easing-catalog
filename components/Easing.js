@@ -1,11 +1,11 @@
 // import { BezierCurveEditor } from 'react-bezier-curve-editor'
-import BezierEditor from 'bezier-easing-editor';
-import s from './Easing.module.scss';
-import { className } from '../modules/js/className';
-import { round2 } from '../modules/js/math';
-import { EASE_NAME_LIST, EASE_TYPE_LIST } from '../modules/js/easeList';
+import BezierEditor from 'bezier-easing-editor'
+import s from './Easing.module.scss'
+import { className } from '../modules/js/className'
+import { round2 } from '../modules/js/math'
+import { EASE_NAME_LIST, EASE_TYPE_LIST } from '../modules/js/easeList'
 
-let timerId;
+let timerId
 
 export default function Easing(props) {
   const {
@@ -21,39 +21,39 @@ export default function Easing(props) {
     onChangeBezierEditorValue,
     onChangeEaseCustom,
     play,
-  } = props;
+  } = props
 
-  const bezierEditorValueText = String(bezierEditorValue);
+  const bezierEditorValueText = String(bezierEditorValue)
 
   const handleChange = (event) => {
-    const { name, value } = event.currentTarget;
+    const { name, value } = event.currentTarget
     switch (name) {
       case 'easeName':
-        onChangeEaseName(value);
+        onChangeEaseName(value)
         if (value !== 'ease' && easeType === 'default') {
-          onChangeEaseType('out');
+          onChangeEaseType('out')
         }
-        break;
+        break
       case 'easeType':
-        onChangeEaseType(value);
-        break;
+        onChangeEaseType(value)
+        break
       case 'duration':
-        if (value === '') return;
-        onChangeDuration(Number(value));
-        break;
+        if (value === '') return
+        onChangeDuration(Number(value))
+        break
     }
-    play();
-  };
+    play()
+  }
 
   const handleChangeBezier = (value) => {
-    const roundedValue = value.map((num) => round2(num));
-    onChangeBezierEditorValue(roundedValue);
-    clearTimeout(timerId);
+    const roundedValue = value.map((num) => round2(num))
+    onChangeBezierEditorValue(roundedValue)
+    clearTimeout(timerId)
     timerId = setTimeout(() => {
-      onChangeEaseCustom(roundedValue);
-      play();
-    }, 100);
-  };
+      onChangeEaseCustom(roundedValue)
+      play()
+    }, 100)
+  }
 
   return (
     <dl>
@@ -141,5 +141,5 @@ export default function Easing(props) {
         </dd>
       </div>
     </dl>
-  );
+  )
 }

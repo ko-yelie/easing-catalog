@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/dist/CustomEase';
-import Easing from '../../components/Easing';
-import { className } from '../../modules/js/className';
-import gsapK from '../../modules/js/gsapK';
-import s from './index.module.scss';
-import { EASE_LIST } from '../../modules/js/easeList';
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { CustomEase } from 'gsap/dist/CustomEase'
+import Easing from '../../components/Easing'
+import { className } from '../../modules/js/className'
+import gsapK from '../../modules/js/gsapK'
+import s from './index.module.scss'
+import { EASE_LIST } from '../../modules/js/easeList'
 
 const param = {
   easeName: 'power4',
@@ -16,46 +16,46 @@ const param = {
   easeFade: 'power2.out',
   stagger: 0.09,
   text: 'animation',
-};
+}
 
 export default function Text() {
-  const [easeName, setEaseName] = useState(param.easeName);
-  const [easeType, setEaseType] = useState(param.easeType);
-  const [easeCustom, setEaseCustom] = useState(param.easeCustom);
-  const [bezierEditorValue, setBezierEditorValue] = useState(param.easeCustom);
-  const [duration, setDuration] = useState(param.duration);
-  const [isShow, setIsShow] = useState(false);
-  const elGsap = useRef();
+  const [easeName, setEaseName] = useState(param.easeName)
+  const [easeType, setEaseType] = useState(param.easeType)
+  const [easeCustom, setEaseCustom] = useState(param.easeCustom)
+  const [bezierEditorValue, setBezierEditorValue] = useState(param.easeCustom)
+  const [duration, setDuration] = useState(param.duration)
+  const [isShow, setIsShow] = useState(false)
+  const elGsap = useRef()
 
-  const isCustom = easeName === 'custom';
-  const isDefaultEase = easeName === 'ease';
-  const easeCustomText = String(easeCustom);
+  const isCustom = easeName === 'custom'
+  const isDefaultEase = easeName === 'ease'
+  const easeCustomText = String(easeCustom)
 
   const play = () => {
-    setIsShow(false);
-  };
+    setIsShow(false)
+  }
 
-  const ease = !isCustom && EASE_LIST[easeName][easeType];
-  const easeCss = isCustom ? `cubic-bezier(${easeCustomText})` : ease.css;
+  const ease = !isCustom && EASE_LIST[easeName][easeType]
+  const easeCss = isCustom ? `cubic-bezier(${easeCustomText})` : ease.css
   const easeGsap = isCustom
     ? CustomEase.create('customEase', easeCustomText)
     : isDefaultEase
     ? CustomEase.create('customEase', ease.gsap)
-    : ease.gsap;
+    : ease.gsap
   const easeGsapText = isCustom
     ? `CustomEase.create('customEase', '${easeCustomText}')`
     : isDefaultEase
     ? `CustomEase.create('customEase', '${ease.gsap}')`
-    : ease.gsap;
+    : ease.gsap
 
-  const { y, easeFade, stagger } = param;
+  const { y, easeFade, stagger } = param
 
   useEffect(() => {
     if (!isShow) {
       requestAnimationFrame(() => {
-        setIsShow(true);
+        setIsShow(true)
 
-        const chars = elGsap.current.querySelectorAll('span');
+        const chars = elGsap.current.querySelectorAll('span')
 
         gsapK.fromTo(
           chars,
@@ -68,7 +68,7 @@ export default function Text() {
             ease: easeFade,
             stagger,
           }
-        );
+        )
 
         gsapK.fromTo(
           chars,
@@ -81,10 +81,10 @@ export default function Text() {
             ease: easeGsap,
             stagger,
           }
-        );
-      });
+        )
+      })
     }
-  }, [isShow]);
+  }, [isShow])
 
   return (
     <>
@@ -163,5 +163,5 @@ export default function Text() {
         <button onClick={play}>Play</button>
       </div>
     </>
-  );
+  )
 }

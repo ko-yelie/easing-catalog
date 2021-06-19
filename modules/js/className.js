@@ -1,6 +1,6 @@
 export function className(...args) {
   const classNames = []
-  args.forEach(arg => {
+  args.forEach((arg) => {
     switch (typeof arg) {
       case 'string':
         if (!!arg) {
@@ -8,7 +8,7 @@ export function className(...args) {
         }
         break
       case 'object':
-        Object.keys(arg).forEach((key) =>{
+        Object.keys(arg).forEach((key) => {
           if (!!arg[key]) {
             classNames.push(key)
           }

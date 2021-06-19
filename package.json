@@ -3,17 +3,23 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prettier-fix": "prettier --write .",
+    "eslint": "eslint . --ext .js",
+    "eslint:fix": "eslint --fix . --ext .js"
   },
   "dependencies": {
     "bezier-easing-editor": "^0.8.0",
+    "eslint": "^7.29.0",
+    "eslint-config-next": "^11.0.0",
     "gsap": "./vendors/gsap-bonus.tgz",
-    "next": "latest",
-    "node-sass": "^5.0.0",
-    "react": "^16.7.0",
+    "next": "^11.0.0",
+    "node-sass": "^6.0.0",
+    "prettier": "^2.3.1",
+    "react": "^17.0.2",
     "react-bezier-curve-editor": "^1.0.0",
-    "react-dom": "^16.7.0",
-    "sass": "1.26.3",
+    "react-dom": "^17.0.2",
+    "sass": "^1.35.1",
     "styled-jsx-plugin-sass": "^1.0.0"
   },
   "license": "MIT"

@@ -47,9 +47,11 @@ export function space2br(text) {
  */
 export function camelCase(str) {
   str = str.charAt(0).toLowerCase() + str.slice(1)
-  return str.replace(/[-_ ](.)/g, function(match, group1) {
-    return group1.toUpperCase()
-  }).trim()
+  return str
+    .replace(/[-_ ](.)/g, function (match, group1) {
+      return group1.toUpperCase()
+    })
+    .trim()
 }
 
 /**
@@ -59,7 +61,7 @@ export function camelCase(str) {
  */
 export function snakeCase(str) {
   const camel = camelCase(str)
-  return camel.replace(/[A-Z]/g, function(s) {
+  return camel.replace(/[A-Z]/g, function (s) {
     return '_' + s.charAt(0).toLowerCase()
   })
 }

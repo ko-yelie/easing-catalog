@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/dist/CustomEase';
-import '../styles.scss';
+import Link from 'next/link'
+import { gsap } from 'gsap'
+import { CustomEase } from 'gsap/dist/CustomEase'
+import '../styles.scss'
 
-gsap.registerPlugin(CustomEase);
+gsap.registerPlugin(CustomEase)
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
       </header>
       <Component {...pageProps} />
     </>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

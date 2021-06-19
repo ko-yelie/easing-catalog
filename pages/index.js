@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import HelloWorld from '../components/hello-world';
+import Link from 'next/link'
+import HelloWorld from '../components/hello-world'
 
 export default function Home() {
   return (
@@ -16,5 +16,5 @@ export default function Home() {
         </ul>
       </nav>
     </div>
-  );
+  )
 }
