@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bezier-easing-editor": "^0.8.0",
+    "classnames": "^2.3.1",
     "eslint": "^7.29.0",
     "eslint-config-next": "^11.0.0",
     "gsap": "./vendors/gsap-bonus.tgz",

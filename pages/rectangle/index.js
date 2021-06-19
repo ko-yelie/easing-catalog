@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { className } from '../../modules/js/className'
+import cn from 'classnames'
 import gsapK from '../../modules/js/gsapK'
 import s from './index.module.scss'
 import AnimationUi from '../../components/AnimationUi'
@@ -30,7 +30,7 @@ export default function Rectangle() {
 
   const childCss = ({ isShow, easeStyle }) => (
     <div
-      className={className(s.rectangle, s.css, {
+      className={cn(s.rectangle, s.css, {
         [s._show]: isShow,
       })}
     >
@@ -40,7 +40,7 @@ export default function Rectangle() {
 
   const childJs = ({ isShow }) => (
     <div
-      className={className(s.rectangle, s.gsap, {
+      className={cn(s.rectangle, s.gsap, {
         [s._show]: isShow,
       })}
     >

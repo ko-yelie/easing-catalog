@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CustomEase } from 'gsap/dist/CustomEase'
 import Easing from './Easing'
-import { className } from '../modules/js/className'
 import s from './AnimationUi.module.scss'
 import { EASE_LIST } from '../modules/js/easeList'
 
@@ -53,7 +52,7 @@ export default function AnimationUi({ runJs, childCss, childJs, ...param }) {
 
   return (
     <>
-      <dl className={className(s.root)}>
+      <dl className={s.root}>
         <div>
           <dt>CSS:</dt>
           <dd>

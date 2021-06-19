@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { className } from '../../modules/js/className'
+import cn from 'classnames'
 import gsapK from '../../modules/js/gsapK'
 import s from './index.module.scss'
 import AnimationUi from '../../components/AnimationUi'
@@ -51,7 +51,7 @@ export default function Text() {
 
   const childCss = ({ isShow, easeStyle }) => (
     <div
-      className={className(s.text, s.css, {
+      className={cn(s.text, s.css, {
         [s._show]: isShow,
       })}
     >
@@ -65,7 +65,7 @@ export default function Text() {
 
   const childJs = ({ isShow }) => (
     <div
-      className={className(s.text, s.gsap, {
+      className={cn(s.text, s.gsap, {
         [s._show]: isShow,
       })}
       ref={elGsap}

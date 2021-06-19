@@ -1,7 +1,6 @@
 // import { BezierCurveEditor } from 'react-bezier-curve-editor'
 import BezierEditor from 'bezier-easing-editor'
 import s from './Easing.module.scss'
-import { className } from '../modules/js/className'
 import { round2 } from '../modules/js/math'
 import { EASE_NAME_LIST, EASE_TYPE_LIST } from '../modules/js/easeList'
 
@@ -60,7 +59,7 @@ export default function Easing(props) {
       <div>
         <dt>ease:</dt>
         <dd>
-          <div className={className(s.ease)}>
+          <div className={s.ease}>
             <dl>
               <div>
                 <dt>name:</dt>
