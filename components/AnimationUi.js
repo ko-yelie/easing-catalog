@@ -41,12 +41,8 @@ export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
 
   useEffect(() => {
     if (!isShow) {
-      // NOTE: CSSアニメーションが発火するようにrequestAnimationFrameを噛ます
-      requestAnimationFrame(() => {
-        setIsShow(true)
-
-        runJs({ duration, easeGsap })
-      })
+      setIsShow(true)
+      runJs({ duration, easeGsap })
     }
   }, [isShow, easeGsap, duration, runJs])
 

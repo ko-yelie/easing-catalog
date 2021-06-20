@@ -5,45 +5,70 @@ import s from './index.module.scss'
 import AnimationUi from '../../components/AnimationUi'
 
 const param = {
-  easeName: 'expo',
+  easeName: 'power4',
   easeType: 'out',
   easeCustom: [0.25, 0.1, 0.25, 1],
   duration: 1,
+  delayMain: 0.4,
 }
 
 export default function Rectangle() {
-  const elGsap = useRef()
+  const elCoverMain = useRef()
+  const elCoverFirst = useRef()
 
   const childCss = ({ isShow, easeStyle }) => (
     <div
-      className={cn(s.rectangle, s.css, {
+      className={cn(s.rectangle, s._css, {
         [s._show]: isShow,
       })}
     >
-      <div className={s.inner} style={easeStyle}></div>
+      <div
+        className={cn(s.cover, s._main)}
+        style={
+          easeStyle && {
+            ...easeStyle,
+            transitionDelay: `${param.delayMain}s`,
+          }
+        }
+      ></div>
+      <div className={cn(s.cover, s._first)} style={easeStyle}></div>
     </div>
   )
 
   const childJs = ({ isShow }) => (
     <div
-      className={cn(s.rectangle, s.gsap, {
+      className={cn(s.rectangle, s._gsap, {
         [s._show]: isShow,
       })}
     >
-      <div className={s.inner} ref={elGsap}></div>
+      <div className={cn(s.cover, s._main)} ref={elCoverMain}></div>
+      <div className={cn(s.cover, s._first)} ref={elCoverFirst}></div>
     </div>
   )
 
   const runJs = ({ duration, easeGsap }) => {
     gsapK.fromTo(
-      elGsap.current,
-      {
-        x: '-100%',
-      },
+      elCoverFirst.current,
       {
         x: 0,
+      },
+      {
+        x: '100%',
         duration,
         ease: easeGsap,
+      }
+    )
+
+    gsapK.fromTo(
+      elCoverMain.current,
+      {
+        x: 0,
+      },
+      {
+        x: '100%',
+        duration,
+        ease: easeGsap,
+        delay: param.delayMain,
       }
     )
   }
