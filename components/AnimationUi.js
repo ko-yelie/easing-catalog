@@ -4,7 +4,7 @@ import Easing from './Easing'
 import s from './AnimationUi.module.scss'
 import { EASE_LIST } from '../modules/js/easeList'
 
-export default function AnimationUi({ runJs, childCss, childJs, ...param }) {
+export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
   const [easeName, setEaseName] = useState(param.easeName)
   const [easeType, setEaseType] = useState(param.easeType)
   const [easeCustom, setEaseCustom] = useState(param.easeCustom)

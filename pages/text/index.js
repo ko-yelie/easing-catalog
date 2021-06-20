@@ -18,6 +18,35 @@ const param = {
 export default function Text() {
   const elGsap = useRef()
 
+  const childCss = ({ isShow, easeStyle }) => (
+    <div
+      className={cn(s.text, s.css, {
+        [s._show]: isShow,
+      })}
+    >
+      {param.text.split('').map((char, i) => (
+        <span className={s.char} key={`${i}-${char}`} style={easeStyle}>
+          {char}
+        </span>
+      ))}
+    </div>
+  )
+
+  const childJs = ({ isShow }) => (
+    <div
+      className={cn(s.text, s.gsap, {
+        [s._show]: isShow,
+      })}
+      ref={elGsap}
+    >
+      {param.text.split('').map((char, i) => (
+        <span className={s.char} key={`${i}-${char}`}>
+          {char}
+        </span>
+      ))}
+    </div>
+  )
+
   const runJs = ({ duration, easeGsap }) => {
     const chars = elGsap.current.querySelectorAll('span')
     const { y, easeFade, stagger } = param
@@ -49,40 +78,11 @@ export default function Text() {
     )
   }
 
-  const childCss = ({ isShow, easeStyle }) => (
-    <div
-      className={cn(s.text, s.css, {
-        [s._show]: isShow,
-      })}
-    >
-      {param.text.split('').map((char, i) => (
-        <span className={s.char} key={`${i}-${char}`} style={easeStyle}>
-          {char}
-        </span>
-      ))}
-    </div>
-  )
-
-  const childJs = ({ isShow }) => (
-    <div
-      className={cn(s.text, s.gsap, {
-        [s._show]: isShow,
-      })}
-      ref={elGsap}
-    >
-      {param.text.split('').map((char, i) => (
-        <span className={s.char} key={`${i}-${char}`}>
-          {char}
-        </span>
-      ))}
-    </div>
-  )
-
   return (
     <AnimationUi
-      runJs={runJs}
       childCss={childCss}
       childJs={childJs}
+      runJs={runJs}
       {...param}
     />
   )

@@ -14,20 +14,6 @@ const param = {
 export default function Rectangle() {
   const elGsap = useRef()
 
-  const runJs = ({ duration, easeGsap }) => {
-    gsapK.fromTo(
-      elGsap.current,
-      {
-        x: '-100%',
-      },
-      {
-        x: 0,
-        duration,
-        ease: easeGsap,
-      }
-    )
-  }
-
   const childCss = ({ isShow, easeStyle }) => (
     <div
       className={cn(s.rectangle, s.css, {
@@ -48,11 +34,25 @@ export default function Rectangle() {
     </div>
   )
 
+  const runJs = ({ duration, easeGsap }) => {
+    gsapK.fromTo(
+      elGsap.current,
+      {
+        x: '-100%',
+      },
+      {
+        x: 0,
+        duration,
+        ease: easeGsap,
+      }
+    )
+  }
+
   return (
     <AnimationUi
-      runJs={runJs}
       childCss={childCss}
       childJs={childJs}
+      runJs={runJs}
       {...param}
     />
   )
