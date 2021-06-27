@@ -3,4 +3,5 @@ node_modules
 public
 tsconfig.json
 .babelrc
+*.json
 *.yml

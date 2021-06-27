@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import cn from 'classnames'
-import gsapK from '../../modules/js/gsapK'
+import gsapK from '@modules/js/gsapK'
 import s from './index.module.scss'
-import AnimationUi from '../../components/AnimationUi'
+import AnimationUi from '@components/AnimationUi'
 
 const param = {
   easeName: 'power4',

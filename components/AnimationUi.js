@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { CustomEase } from 'gsap/dist/CustomEase'
 import Easing from './Easing'
 import s from './AnimationUi.module.scss'
-import { EASE_LIST } from '../modules/js/easeList'
+import { EASE_LIST } from '@modules/js/easeList'
 
 export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
   const [easeName, setEaseName] = useState(param.easeName)

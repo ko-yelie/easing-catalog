@@ -1,8 +1,8 @@
 // import { BezierCurveEditor } from 'react-bezier-curve-editor'
 import BezierEditor from 'bezier-easing-editor'
 import s from './Easing.module.scss'
-import { round2 } from '../modules/js/math'
-import { EASE_NAME_LIST, EASE_TYPE_LIST } from '../modules/js/easeList'
+import { round2 } from '@modules/js/math'
+import { EASE_NAME_LIST, EASE_TYPE_LIST } from '@modules/js/easeList'
 
 let timerId
 

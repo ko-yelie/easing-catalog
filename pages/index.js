@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import HelloWorld from '../components/hello-world'
+import HelloWorld from '@components/hello-world'
 
 export default function Home() {
   return (
@@ -8,10 +8,10 @@ export default function Home() {
       <nav>
         <ul>
           <li>
-            <Link href="/rectangle/">Rectangle</Link>
+            <Link href="/animation/rectangle/">Rectangle</Link>
           </li>
           <li>
-            <Link href="/text/">Text</Link>
+            <Link href="/animation/text/">Text</Link>
           </li>
         </ul>
       </nav>
