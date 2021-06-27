@@ -1,0 +1,32 @@
+.rectangle {
+  overflow: hidden;
+  position: relative;
+  width: 300px;
+  height: 200px;
+  border: 1px solid #eee;
+}
+
+.cover {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1%;
+  bottom: 0;
+  left: 0;
+  transition: none;
+
+  &._main {
+    background-color: #4756ca;
+  }
+
+  &._first {
+    background-color: #fff;
+  }
+}
+
+.rectangle._css._show {
+  .cover {
+    transform: translateX(100%);
+    transition-property: transform;
+  }
+}

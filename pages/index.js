@@ -13,6 +13,11 @@ export default function Home() {
           <li>
             <Link href="/animation/text/">Text</Link>
           </li>
+          <li>
+            <Link href="/animation/rectangle-and-text/">
+              Rectangle and text
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

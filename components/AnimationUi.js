@@ -49,16 +49,18 @@ export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
   return (
     <>
       <dl className={s.root}>
-        <div>
-          <dt>CSS:</dt>
-          <dd>
-            {childCss({ isShow, easeStyle })}
+        {childCss && (
+          <div>
+            <dt>CSS:</dt>
+            <dd>
+              {childCss({ isShow, easeStyle })}
 
-            <div>
-              <small>{easeCss}</small>
-            </div>
-          </dd>
-        </div>
+              <div>
+                <small>{easeCss}</small>
+              </div>
+            </dd>
+          </div>
+        )}
 
         <div>
           <dt>GSAP:</dt>
