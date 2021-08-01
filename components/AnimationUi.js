@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { CustomEase } from 'gsap/dist/CustomEase'
-import Easing from './Easing'
 import s from './AnimationUi.module.scss'
 import { EASE_LIST } from '@modules/js/easeList'
+import Easing from './ui/Easing'
+import Duration from './ui/Duration'
 
 export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
   const [easeName, setEaseName] = useState(param.easeName)
@@ -74,20 +75,26 @@ export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
         </div>
       </dl>
 
-      <Easing
-        easeName={easeName}
-        easeType={easeType}
-        bezierEditorValue={bezierEditorValue}
-        duration={duration}
-        isDefaultEase={isDefaultEase}
-        isCustom={isCustom}
-        onChangeEaseName={setEaseName}
-        onChangeEaseType={setEaseType}
-        onChangeDuration={setDuration}
-        onChangeBezierEditorValue={setBezierEditorValue}
-        onChangeEaseCustom={setEaseCustom}
-        play={play}
-      />
+      <dl>
+        <Easing
+          easeName={easeName}
+          easeType={easeType}
+          bezierEditorValue={bezierEditorValue}
+          isDefaultEase={isDefaultEase}
+          isCustom={isCustom}
+          onChangeEaseName={setEaseName}
+          onChangeEaseType={setEaseType}
+          onChangeBezierEditorValue={setBezierEditorValue}
+          onChangeEaseCustom={setEaseCustom}
+          play={play}
+        />
+
+        <Duration
+          duration={duration}
+          onChangeDuration={setDuration}
+          play={play}
+        />
+      </dl>
 
       <div>
         <button onClick={play}>Play</button>

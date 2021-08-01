@@ -7,26 +7,29 @@
 }
 
 .cover {
-  content: '';
   position: absolute;
   top: 0;
-  right: -1%;
+  right: 0;
   bottom: 0;
   left: 0;
-  transition: none;
-
-  &._main {
-    background-color: #4756ca;
-  }
-
-  &._first {
-    background-color: #fff;
-  }
+  background-color: #0fc9e7;
+  transform: translateY(-100%);
 }
 
-.rectangle._css._show {
-  .cover {
-    transform: translateX(100%);
-    transition-property: transform;
-  }
+.text {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  opacity: 0;
 }
