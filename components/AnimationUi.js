@@ -1,56 +1,95 @@
 import { useEffect, useState } from 'react'
-import { CustomEase } from 'gsap/dist/CustomEase'
 import s from './AnimationUi.module.scss'
-import { EASE_LIST } from '@modules/js/easeList'
 import Easing from './ui/Easing'
-import Duration from './ui/Duration'
+import Px from './ui/Px'
+import Time from './ui/Time'
 
-export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
-  const [easeName, setEaseName] = useState(param.easeName)
-  const [easeType, setEaseType] = useState(param.easeType)
-  const [easeCustom, setEaseCustom] = useState(param.easeCustom)
-  const [bezierEditorValue, setBezierEditorValue] = useState(param.easeCustom)
-  const [duration, setDuration] = useState(param.duration)
+export default function AnimationUi({ childCss, childJs, runJs, params }) {
   const [isShow, setIsShow] = useState(false)
-
-  const isCustom = easeName === 'custom'
-  const isDefaultEase = easeName === 'ease'
-  const easeCustomText = String(easeCustom)
 
   const play = () => {
     setIsShow(false)
   }
 
-  const ease = !isCustom && EASE_LIST[easeName][easeType]
-  const easeCss = isCustom ? `cubic-bezier(${easeCustomText})` : ease.css
-  const easeGsap = isCustom
-    ? CustomEase.create('customEase', easeCustomText)
-    : isDefaultEase
-    ? CustomEase.create('customEase', ease.gsap)
-    : ease.gsap
-  const easeGsapText = isCustom
-    ? `CustomEase.create('customEase', '${easeCustomText}')`
-    : isDefaultEase
-    ? `CustomEase.create('customEase', '${ease.gsap}')`
-    : ease.gsap
-  const easeStyle = isShow
-    ? {
-        transitionTimingFunction: easeCss,
-        transitionDuration: `${duration}s`,
+  // const ease = !isCustom && EASE_LIST[easeName][easeType]
+  // const easeCss = isCustom ? `cubic-bezier(${easeCustomText})` : ease.css
+  // const easeStyle = isShow
+  //   ? {
+  //       transitionTimingFunction: easeCss,
+  //       transitionDuration: `${duration}s`,
+  //     }
+  //   : null
+
+  const htmlUi = Object.entries(params).map(([name, p]) => {
+    let html
+    switch (p.type) {
+      case 'ease': {
+        const onChange = (name, type, bezier, easeGsapText) => {
+          p.value.name = name
+          p.value.type = type
+          p.value.bezier = bezier
+          p.value.gsap = easeGsapText
+          play()
+        }
+        html = (
+          <Easing
+            easeName={p.value.name}
+            easeType={p.value.type}
+            bezier={p.value.bezier}
+            onChange={onChange}
+          />
+        )
+        break
       }
-    : null
+      case 'time': {
+        const onChange = (value) => {
+          p.value = value
+          play()
+        }
+        html = <Time value={p.value} onChange={onChange} />
+        break
+      }
+      case 'px': {
+        const onChange = (value) => {
+          p.value = value
+          play()
+        }
+        html = <Px value={p.value} onChange={onChange} />
+        break
+      }
+    }
+    return (
+      <div key={name}>
+        <dt>{name}:</dt>
+        <dd>{html}</dd>
+      </div>
+    )
+  })
 
   useEffect(() => {
     if (!isShow) {
       setIsShow(true)
-      runJs({ duration, easeGsap })
+      runJs()
     }
-  }, [isShow, easeGsap, duration, runJs])
+  }, [isShow, runJs])
+
+  useEffect(() => {
+    const handleKeydown = (e) => {
+      if (e.code === 'KeyP') {
+        e.preventDefault()
+        play()
+      }
+    }
+    document.addEventListener('keydown', handleKeydown)
+    return () => {
+      document.removeEventListener('keydown', handleKeydown)
+    }
+  }, [])
 
   return (
-    <>
-      <dl className={s.root}>
-        {childCss && (
+    <div className={s.root}>
+      <dl className={s.visual}>
+        {/* {childCss && (
           <div>
             <dt>CSS:</dt>
             <dd>
@@ -61,44 +100,25 @@ export default function AnimationUi({ childCss, childJs, runJs, ...param }) {
               </div>
             </dd>
           </div>
-        )}
+        )} */}
 
         <div>
           <dt>GSAP:</dt>
           <dd>
             {childJs({ isShow })}
 
-            <div>
-              <small>{easeGsapText}</small>
-            </div>
+            <div>{/* <small>{easeGsapText}</small> */}</div>
           </dd>
         </div>
       </dl>
 
-      <dl>
-        <Easing
-          easeName={easeName}
-          easeType={easeType}
-          bezierEditorValue={bezierEditorValue}
-          isDefaultEase={isDefaultEase}
-          isCustom={isCustom}
-          onChangeEaseName={setEaseName}
-          onChangeEaseType={setEaseType}
-          onChangeBezierEditorValue={setBezierEditorValue}
-          onChangeEaseCustom={setEaseCustom}
-          play={play}
-        />
+      <div className={s.ui}>
+        <div>
+          <button onClick={play}>Play</button>
+        </div>
 
-        <Duration
-          duration={duration}
-          onChangeDuration={setDuration}
-          play={play}
-        />
-      </dl>
-
-      <div>
-        <button onClick={play}>Play</button>
+        <dl>{htmlUi}</dl>
       </div>
-    </>
+    </div>
   )
 }

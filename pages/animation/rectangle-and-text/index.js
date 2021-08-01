@@ -1,26 +1,54 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import cn from 'classnames'
 import gsapK from '@modules/js/gsapK'
 import s from './index.module.scss'
 import AnimationUi from '@components/AnimationUi'
 
-const param = {
-  easeName: 'expo',
-  easeType: 'out',
-  easeCustom: [0.25, 0.1, 0.25, 1],
-  duration: 1.2,
-
-  easeNameFade: 'power2',
-  easeTypeFade: 'out',
-  durationFade: 1,
-  delayText: 0.4,
-  staggerText: 0.2,
-  startY: 20,
+const params = {
+  moveEase: {
+    type: 'ease',
+    value: {
+      name: 'expo',
+      type: 'out',
+    },
+  },
+  moveDuration: {
+    type: 'time',
+    value: 1.2,
+  },
+  fadeEase: {
+    type: 'ease',
+    value: {
+      name: 'power2',
+      type: 'out',
+    },
+  },
+  fadeDuration: {
+    type: 'time',
+    value: 1,
+  },
+  textDelay: {
+    type: 'time',
+    value: 0.3,
+  },
+  staggerText: {
+    type: 'time',
+    value: 0.2,
+  },
+  startY: {
+    type: 'px',
+    value: 20,
+  },
 }
 
 export default function Rectangle() {
-  const elCover = useRef()
-  const elText = useRef()
+  const refCover = useRef()
+  const refText = useRef()
+  const refItems = useRef()
+
+  useEffect(() => {
+    refItems.current = refText.current.querySelectorAll('li')
+  }, [refText])
 
   const childJs = ({ isShow }) => (
     <div
@@ -28,28 +56,37 @@ export default function Rectangle() {
         [s._show]: isShow,
       })}
     >
-      <div className={cn(s.cover)} ref={elCover}></div>
-      <ul className={cn(s.text)} ref={elText}>
+      <div className={cn(s.cover)} ref={refCover}></div>
+      <ul className={cn(s.text)} ref={refText}>
         <li className={s.item}>Text 1</li>
         <li className={s.item}>Text 2</li>
       </ul>
     </div>
   )
 
-  const runJs = ({ duration, easeGsap }) => {
-    const elsItem = elText.current.querySelectorAll('li')
+  const runJs = () => {
+    const {
+      moveDuration,
+      moveEase,
+      fadeDuration,
+      fadeEase,
+      staggerText,
+      startY,
+      textDelay,
+    } = params
+    const elsItem = refItems.current || refText.current.querySelectorAll('li')
 
     gsapK
       .timeline('rectangleAndText')
       .fromTo(
-        elCover.current,
+        refCover.current,
         {
           y: '-100%',
         },
         {
           y: 0,
-          duration,
-          ease: easeGsap,
+          duration: moveDuration.value,
+          ease: moveEase.value.gsap,
         }
       )
       .add(
@@ -61,27 +98,27 @@ export default function Rectangle() {
             },
             {
               opacity: 1,
-              duration: param.durationFade,
-              ease: `${param.easeNameFade}.${param.easeTypeFade}`,
-              stagger: param.staggerText,
+              duration: fadeDuration.value,
+              ease: fadeEase.value.gsap,
+              stagger: staggerText.value,
             }
           ),
           gsapK.fromTo(
             elsItem,
             {
-              y: param.startY,
+              y: startY.value,
             },
             {
               y: 0,
-              duration,
-              ease: easeGsap,
-              stagger: param.staggerText,
+              duration: moveDuration.value,
+              ease: moveEase.value.gsap,
+              stagger: staggerText.value,
             }
           ),
         ],
-        param.delayText
+        textDelay.value
       )
   }
 
-  return <AnimationUi childJs={childJs} runJs={runJs} {...param} />
+  return <AnimationUi childJs={childJs} runJs={runJs} params={params} />
 }
