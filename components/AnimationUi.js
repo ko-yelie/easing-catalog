@@ -11,24 +11,16 @@ export default function AnimationUi({ childCss, childJs, runJs, params }) {
     setIsShow(false)
   }
 
-  // const ease = !isCustom && EASE_LIST[easeName][easeType]
-  // const easeCss = isCustom ? `cubic-bezier(${easeCustomText})` : ease.css
-  // const easeStyle = isShow
-  //   ? {
-  //       transitionTimingFunction: easeCss,
-  //       transitionDuration: `${duration}s`,
-  //     }
-  //   : null
-
   const htmlUi = Object.entries(params).map(([name, p]) => {
     let html
     switch (p.type) {
       case 'ease': {
-        const onChange = (name, type, bezier, easeGsapText) => {
+        const onChange = (name, type, bezier, easeGsapText, style) => {
           p.value.name = name
           p.value.type = type
           p.value.bezier = bezier
           p.value.gsap = easeGsapText
+          p.value.style = style
           play()
         }
         html = (
@@ -89,23 +81,17 @@ export default function AnimationUi({ childCss, childJs, runJs, params }) {
   return (
     <div className={s.root}>
       <dl className={s.visual}>
-        {/* {childCss && (
+        {childCss && (
           <div>
             <dt>CSS:</dt>
-            <dd>
-              {childCss({ isShow, easeStyle })}
-
-              <div>
-                <small>{easeCss}</small>
-              </div>
-            </dd>
+            <dd>{childCss(isShow)}</dd>
           </div>
-        )} */}
+        )}
 
         <div>
           <dt>GSAP:</dt>
           <dd>
-            {childJs({ isShow })}
+            {childJs(isShow)}
 
             <div>{/* <small>{easeGsapText}</small> */}</div>
           </dd>

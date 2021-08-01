@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 export default function Easing({ easeName, easeType, bezier, onChange }) {
   const [easeText, setEaseText] = useState('')
+  const [easeCss, setEaseCss] = useState('')
   const [isCustom, setIsCustom] = useState(easeName === 'custom')
   const [isDefaultEase, setIsDefaultEase] = useState(easeName === 'ease')
   const [myBezier, setMyBezier] = useState(bezier || [0.25, 0.1, 0.25, 1])
@@ -23,7 +24,20 @@ export default function Easing({ easeName, easeType, bezier, onChange }) {
           currentTarget: { name, value },
         } = event)
       }
-      let easeNameCurrent = easeName
+      let easeNameCurrent = (() => {
+        switch (easeName) {
+          case 'power1':
+            return 'quad'
+          case 'power2':
+            return 'cubic'
+          case 'power3':
+            return 'quart'
+          case 'power4':
+            return 'quint'
+          default:
+            return easeName
+        }
+      })()
       let easeTypeCurrent = easeType
       let bezierCurrent = bezier || [0.25, 0.1, 0.25, 1]
       switch (name) {
@@ -48,8 +62,25 @@ export default function Easing({ easeName, easeType, bezier, onChange }) {
         : isDefaultEase
         ? CustomEase.create('customEase', ease.gsap)
         : ease.gsap
-      onChange(easeNameCurrent, easeTypeCurrent, bezierCurrent, easeGsapText)
-      setEaseText(isCustom ? easeCustomText : ease.gsap)
+      const transitionTimingFunction = isCustom
+        ? `cubic-bezier(${easeCustomText})`
+        : ease.css
+      const style = {
+        transitionTimingFunction,
+      }
+      onChange(
+        easeNameCurrent,
+        easeTypeCurrent,
+        bezierCurrent,
+        easeGsapText,
+        style
+      )
+      setEaseText(
+        isCustom
+          ? `CustomEase.create('easeName', '${easeCustomText}')`
+          : ease.gsap
+      )
+      setEaseCss(transitionTimingFunction)
       setIsCustom(isCustom)
       setIsDefaultEase(isDefaultEase)
     },
@@ -76,10 +107,6 @@ export default function Easing({ easeName, easeType, bezier, onChange }) {
   return (
     <div className={s.ease}>
       <dl>
-        <div>
-          <small>{easeText}</small>
-        </div>
-
         <div>
           <dt>name:</dt>
           <dd>
@@ -109,6 +136,26 @@ export default function Easing({ easeName, easeType, bezier, onChange }) {
             </dd>
           </div>
         )}
+
+        <div>
+          <dt>value:</dt>
+          <dd>
+            <dl>
+              <div>
+                <dt>gsap:</dt>
+                <dd>
+                  <small>{easeText}</small>
+                </dd>
+              </div>
+              <div>
+                <dt>CSS:</dt>
+                <dd>
+                  <small>{easeCss || '(none)'}</small>
+                </dd>
+              </div>
+            </dl>
+          </dd>
+        </div>
       </dl>
 
       {isCustom && (
