@@ -4,11 +4,11 @@
 
 .char {
   display: inline-block;
+  transition: none;
 }
 
 .text.css._show {
   .char {
-    transform: translateX(0%);
-    transition: transform;
+    transition-property: transform, opacity;
   }
 }

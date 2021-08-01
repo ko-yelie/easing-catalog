@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import s from './AnimationUi.module.scss'
 import Easing from './ui/Easing'
-import Px from './ui/Px'
+import Num from './ui/Num'
 import Time from './ui/Time'
 
 export default function AnimationUi({ childCss, childJs, runJs, params }) {
@@ -41,12 +41,19 @@ export default function AnimationUi({ childCss, childJs, runJs, params }) {
         html = <Time value={p.value} onChange={onChange} />
         break
       }
-      case 'px': {
+      case 'number': {
         const onChange = (value) => {
           p.value = value
           play()
         }
-        html = <Px value={p.value} onChange={onChange} />
+        html = (
+          <Num
+            value={p.value}
+            unit={p.unit}
+            step={p.step}
+            onChange={onChange}
+          />
+        )
         break
       }
     }

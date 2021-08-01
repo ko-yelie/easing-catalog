@@ -1,4 +1,4 @@
-export default function Px({ value, onChange }) {
+export default function Num({ value, unit, step, onChange }) {
   const handleChange = (event) => {
     const { value } = event.currentTarget
     if (value === '') return
@@ -11,11 +11,11 @@ export default function Px({ value, onChange }) {
         <input
           name="delay"
           type="number"
-          step="1"
+          step={step || 1}
           value={value}
           onChange={handleChange}
         ></input>
-        px
+        {unit}
       </div>
     </>
   )

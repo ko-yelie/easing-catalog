@@ -36,8 +36,10 @@ const params = {
     value: 0.2,
   },
   startY: {
-    type: 'px',
+    type: 'number',
     value: 20,
+    unit: 'px',
+    step: 1,
   },
 }
 
@@ -50,7 +52,7 @@ export default function Rectangle() {
     refItems.current = refText.current.querySelectorAll('li')
   }, [refText])
 
-  const childJs = ({ isShow }) => (
+  const childJs = (isShow) => (
     <div
       className={cn(s.rectangle, s._gsap, {
         [s._show]: isShow,

@@ -4,42 +4,84 @@ import gsapK from '@modules/js/gsapK'
 import s from './index.module.scss'
 import AnimationUi from '@components/AnimationUi'
 
-const param = {
-  easeName: 'power4',
-  easeType: 'out',
-  easeCustom: [0.25, 0.1, 0.25, 1],
-  duration: 1.2,
-  y: '1.2em',
-  easeFade: 'power2.out',
-  stagger: 0.09,
-  text: 'animation',
+const params = {
+  moveEase: {
+    type: 'ease',
+    value: {
+      name: 'power4',
+      type: 'out',
+    },
+  },
+  moveDuration: {
+    type: 'time',
+    value: 1.2,
+  },
+  fadeEase: {
+    type: 'ease',
+    value: {
+      name: 'power2',
+      type: 'out',
+    },
+  },
+  fadeDuration: {
+    type: 'time',
+    value: 1.2,
+  },
+  stagger: {
+    type: 'time',
+    value: 0.09,
+  },
+  y: {
+    type: 'number',
+    value: 1.2,
+    unit: 'em',
+    step: 0.1,
+  },
 }
+const TEXT = 'animation'
 
 export default function Text() {
   const elGsap = useRef()
 
-  const childCss = ({ isShow, easeStyle }) => (
-    <div
-      className={cn(s.text, s.css, {
-        [s._show]: isShow,
-      })}
-    >
-      {param.text.split('').map((char, i) => (
-        <span className={s.char} key={`${i}-${char}`} style={easeStyle}>
-          {char}
-        </span>
-      ))}
-    </div>
-  )
+  const childCss = (isShow) => {
+    const { moveEase, moveDuration, stagger, y } = params
+    const style = {
+      ...moveEase.value.style,
+      transitionDuration: `${moveDuration.value}s`,
+      transform: `translateY(${isShow ? 0 : y.value}${y.unit})`,
+      opacity: isShow ? 1 : 0,
+    }
 
-  const childJs = ({ isShow }) => (
+    return (
+      <div
+        className={cn(s.text, s.css, {
+          [s._show]: isShow,
+        })}
+      >
+        {TEXT.split('').map((char, i) => (
+          <span
+            className={s.char}
+            key={`${i}-${char}`}
+            style={{
+              ...style,
+              transitionDelay: `${stagger.value * i}s`,
+            }}
+          >
+            {char}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  const childJs = (isShow) => (
     <div
       className={cn(s.text, s.gsap, {
         [s._show]: isShow,
       })}
       ref={elGsap}
     >
-      {param.text.split('').map((char, i) => (
+      {TEXT.split('').map((char, i) => (
         <span className={s.char} key={`${i}-${char}`}>
           {char}
         </span>
@@ -47,9 +89,10 @@ export default function Text() {
     </div>
   )
 
-  const runJs = ({ duration, easeGsap }) => {
+  const runJs = () => {
     const chars = elGsap.current.querySelectorAll('span')
-    const { y, easeFade, stagger } = param
+    const { moveEase, moveDuration, fadeEase, fadeDuration, stagger, y } =
+      params
 
     gsapK.fromTo(
       chars,
@@ -58,22 +101,22 @@ export default function Text() {
       },
       {
         opacity: 1,
-        duration,
-        ease: easeFade,
-        stagger,
+        duration: fadeDuration.value,
+        ease: fadeEase.value.gsap,
+        stagger: stagger.value,
       }
     )
 
     gsapK.fromTo(
       chars,
       {
-        y,
+        y: `${y.value}${y.unit}`,
       },
       {
         y: 0,
-        duration,
-        ease: easeGsap,
-        stagger,
+        duration: moveDuration.value,
+        ease: moveEase.value.gsap,
+        stagger: stagger.value,
       }
     )
   }
@@ -83,7 +126,7 @@ export default function Text() {
       childCss={childCss}
       childJs={childJs}
       runJs={runJs}
-      {...param}
+      params={params}
     />
   )
 }

@@ -28,7 +28,7 @@ export default function Rectangle() {
 
   const childCss = (isShow) => {
     const { ease, duration, delay } = params
-    const style = ease.value.style && {
+    const style = {
       ...ease.value.style,
       transitionDuration: `${duration.value}s`,
     }
